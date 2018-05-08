@@ -3,7 +3,7 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
-
+var axios = require("axios");
 var cheerio = require("cheerio");
 
 var db = require("./models");
@@ -38,12 +38,10 @@ app.get("/scrape", function(req, res) {
 
     $("article h2").each(function(i, element) {
       var result = {};
-
-
-      result.title = $(this)
+      result.Headline = $(this)
         .children("a")
         .text();
-      result.link = $(this)
+      result.URL = $(this)
         .children("a")
         .attr("href");
 

@@ -31,31 +31,5 @@ router.get("/save/:id", function(req,res){
     })
 });
 
-router.get("/scrape", function(req,res){
-     var url = "https://www.pgatour.com/";
-    request(url, function(err, response, html ){
-        var $ = cheerio.load(html);
-        var titles = [];
-        $("thumb").each(function(i,item){
-           
-            var entry = ({
-                Headline: $(item).children().text().trim(),
-                URL:  $(item).children().attr("href"),
-                Summary: $(item).parent().children(".summary").text().trim()
-            });
-
-            titles.push(entry);
-            db.Article.create(entry).then(function(dataEntered) {
-                console.log(dataEntered);
-              })
-              .catch(function(err) {
-                console.log(err.message);
-              });
-
-        });
-        res.json(titles);
-    })
-});
-
 
 module.exports = router;
