@@ -89,6 +89,13 @@ app.post("/articles/:id", function(req, res) {
   // and update it's "note" property with the _id of the new note
 });
 
+var databaseUri = 'mongodb://localhost/weekcrawler';
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(databaseUri);
+}
+
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
 });
