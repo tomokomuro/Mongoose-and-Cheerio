@@ -6,44 +6,32 @@ var mongoose = require("mongoose");
 
 var cheerio = require("cheerio");
 
-// Require all models
 var db = require("./models");
 
 var PORT = 3000 | process.env.PORT;
 
-// Initialize Express
 var app = express();
 
-// Configure middleware
-
-// Use morgan logger for logging requests
 app.use(logger("dev"));
-// Use body-parser for handling form submissions
+
 app.use(bodyParser.urlencoded({ extended: true }));
-// Use express.static to serve the public folder as a static directory
+
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/webcrawler");
 
-// Routes
-// Import routes and give the server access to them.
 var routes = require("./controller/html-routes.js");
 app.use(routes);
-
 
 app.get("/", function(req,res){
     res.sendfile("./public/index.html");
 });
 
 app.get("/scrape", function(req, res) {
-  axios.get("http://pgatour.com/").then(function(response) {
-    // , we load that into cheerio and save it to $ for a shorthand selector
+  axios.get("http://www.echojs.com/").then(function(response) {
     var $ = cheerio.load(response.data);
 
-    // Now, we grab every h2 within an article tag, and do the following:
-    $("thumb").each(function(i, element) {
-      // Save an empty result object
+    $("article h2").each(function(i, element) {
       var result = {};
 
 
