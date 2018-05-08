@@ -18,7 +18,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost/webcrawler");
+var databaseUri = 'mongodb://localhost/weekcrawler';
+if (process.env.MONGODB_URI) {
+  mongoose.connect(process.env.MONGODB_URI);
+} else {
+  mongoose.connect(databaseUri);
+}
 
 var routes = require("./controller/html-routes.js");
 app.use(routes);
@@ -88,13 +93,6 @@ app.post("/articles/:id", function(req, res) {
   // then find an article from the req.params.id
   // and update it's "note" property with the _id of the new note
 });
-
-var databaseUri = 'mongodb://localhost/weekcrawler';
-if (process.env.MONGODB_URI) {
-  mongoose.connect(process.env.MONGODB_URI);
-} else {
-  mongoose.connect(databaseUri);
-}
 
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
